@@ -1,0 +1,7 @@
+---
+# TV configuration
+tv:
+  host: 192.168.1.65
+
+
+

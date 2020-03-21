@@ -1,0 +1,54 @@
+package samsungtv
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/go-openapi/swag"
+	"github.com/home-IoT/api-samsungtv/gen/restapi/operations"
+)
+
+// GitRevision holds the git revision based on which this service is compiled
+var GitRevision string
+
+// BuildVersion holds the version of this service
+var BuildVersion string
+
+// BuildTime holds the time of build
+var BuildTime string
+
+type samsungTVCommandLineOptions struct {
+	Version    bool   `short:"v" long:"version" description:"Show version"`
+	ConfigFile string `short:"c" long:"config" description:"Config file"`
+}
+
+var samsungTVCommandLineGroup = swag.CommandLineOptionsGroup{
+	ShortDescription: "SamsungTV API",
+	LongDescription:  "SamsungTV API options",
+	Options:          new(samsungTVCommandLineOptions),
+}
+
+// CommandLineOptionsGroups holds the CL option groups
+var CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{
+	samsungTVCommandLineGroup,
+}
+
+func getConfigurationOptions(api *operations.SamsungtvAPI) *samsungTVCommandLineOptions {
+	for _, v := range api.CommandLineOptionsGroups {
+		options, ok := v.Options.(*samsungTVCommandLineOptions)
+		if ok {
+			return options
+		}
+	}
+	return nil
+}
+
+func showVersion() {
+	fmt.Printf("app version : %s\n", BuildVersion)
+	fmt.Printf("git revision: %s\n", GitRevision)
+	fmt.Printf("build time  : %s\n", BuildTime)
+}
+
+func printError(msg string) {
+	fmt.Fprintln(os.Stderr, msg)
+}

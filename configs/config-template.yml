@@ -1,0 +1,5 @@
+---
+# TV configuration
+tv:
+  host: 127.0.0.1
+

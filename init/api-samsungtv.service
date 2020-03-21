@@ -1,0 +1,15 @@
+[Unit]
+Description=Samsung TV REST API
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/services/api-samsungtv
+ExecStart=/services/api-samsungtv/api-samsungtv --port 8036 --config config.yml
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
+
+[Install]
+WantedBy=multi-user.target
