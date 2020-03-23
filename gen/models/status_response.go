@@ -25,8 +25,8 @@ type StatusResponse struct {
 	// Required: true
 	Reachable *bool `json:"reachable"`
 
-	// tv response
-	TvResponse interface{} `json:"tvResponse,omitempty"`
+	// the status response from the TV
+	TvResponse string `json:"tvResponse,omitempty"`
 }
 
 // Validate validates this status response

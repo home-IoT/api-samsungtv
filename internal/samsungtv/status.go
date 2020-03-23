@@ -8,7 +8,7 @@ import (
 
 // GetStatus returns the status of the connection
 func GetStatus(param ops.GetStatusParams) middleware.Responder {
-	status := CheckConnection()
-	resp := models.StatusResponse{Host: &configuration.TV.Host, Reachable: &status}
+	status, text := CheckConnection()
+	resp := models.StatusResponse{Host: &configuration.TV.Host, Reachable: &status, TvResponse: text}
 	return ops.NewGetStatusOK().WithPayload(&resp)
 }

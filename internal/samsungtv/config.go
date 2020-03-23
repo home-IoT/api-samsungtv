@@ -9,15 +9,25 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type receiverConfig struct {
+const defaultControllerName = "SamsungTVController"
+const defaultTVPort = "8001"
+
+type tvConfig struct {
 	Host string `yaml:"host"`
+	Port string `yaml:"port"`
 }
 
-type denonConfigYAML struct {
-	TV receiverConfig `yaml:"tv"`
+type controllerConfig struct {
+	Host string `yaml:"host"`
+	Name string `yaml:"name"`
 }
 
-var configuration *denonConfigYAML
+type samsungTVConfigYAML struct {
+	TV         tvConfig         `yaml:"tv"`
+	Controller controllerConfig `yaml:"controller"`
+}
+
+var configuration *samsungTVConfigYAML
 
 // Configure configures the server with a given configuration file
 func Configure(api *operations.SamsungtvAPI) {
@@ -43,7 +53,7 @@ func loadConfig(configFile string) {
 		log.Exitf(1, "Error loading the configuration file.")
 	}
 
-	config := new(denonConfigYAML)
+	config := new(samsungTVConfigYAML)
 
 	err = yaml.Unmarshal(file, config)
 	if err != nil {
@@ -51,5 +61,19 @@ func loadConfig(configFile string) {
 		log.Exitf(1, "Error loading the configuration file.")
 	}
 
+	setDefaultValues(config)
+
+	log.InitLog(true)
+
 	configuration = config
+}
+
+func setDefaultValues(config *samsungTVConfigYAML) {
+	if len(config.TV.Port) == 0 {
+		config.TV.Port = defaultTVPort
+	}
+
+	if len(config.Controller.Name) == 0 {
+		config.Controller.Name = defaultControllerName
+	}
 }

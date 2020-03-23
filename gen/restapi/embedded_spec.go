@@ -99,7 +99,8 @@ func init() {
           "type": "boolean"
         },
         "tvResponse": {
-          "type": "object"
+          "description": "the status response from the TV",
+          "type": "string"
         }
       }
     }
@@ -187,7 +188,8 @@ func init() {
           "type": "boolean"
         },
         "tvResponse": {
-          "type": "object"
+          "description": "the status response from the TV",
+          "type": "string"
         }
       }
     }

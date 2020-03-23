@@ -2,6 +2,7 @@
 # TV configuration
 tv:
   host: 192.168.1.65
-
-
-
+  port: 8001
+controller: 
+  host: 192.168.1.53
+  name: U2Ftc3VuZ1R2UmVtb3Rl

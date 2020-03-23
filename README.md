@@ -1,5 +1,11 @@
 # Samsung TV REST API
+
+---
     
+**NOTE:** While the logic is correct, this code does not currently work for my own TV. I am trying to figure out why, but my Python version of the same code seems to work fine. Still investigating. 
+
+---
+
 A very simple REST API to modern Samsung TVs based on a Websocket connection. I can't promise that this works on all TVs, I built this based on a bit of research and testing what method works well with my own TV.  
 
 ## Server
@@ -45,6 +51,6 @@ The code is published under an [MIT license](LICENSE.md).
 Please report issues or feature requests using Github issues. Code contributions can be done using pull requests. 
 
 ## Relevant Repositories
-* [github.com/vrachieru/samsung-tv-api](https://github.com/vrachieru/samsung-tv-api/blob/master/samsungtv/remote.py)
+* [github.com/vrachieru/samsung-tv-api](https://github.com/vrachieru/samsung-tv-api)
 * [github.com/Ape/samsungctl](https://github.com/Ape/samsungctl)
 * [github.com/mhvis/samsung-tv-control](https://github.com/mhvis/samsung-tv-control)

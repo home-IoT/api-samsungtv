@@ -11,12 +11,13 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 
 	"github.com/home-IoT/api-samsungtv/gen/restapi/operations"
+	"github.com/home-IoT/api-samsungtv/internal/samsungtv"
 )
 
 //go:generate swagger generate server --target ../../gen --name Samsungtv --spec ../../api/server.yml
 
 func configureFlags(api *operations.SamsungtvAPI) {
-	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
+	api.CommandLineOptionsGroups = samsungtv.CommandLineOptionsGroups
 }
 
 func configureAPI(api *operations.SamsungtvAPI) http.Handler {
@@ -29,9 +30,14 @@ func configureAPI(api *operations.SamsungtvAPI) http.Handler {
 	// Example:
 	// api.Logger = log.Printf
 
+	samsungtv.Configure(api)
+
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
+
+	api.GetStatusHandler = operations.GetStatusHandlerFunc(samsungtv.GetStatus)
+	api.PostKeyHandler = operations.PostKeyHandlerFunc(samsungtv.PostKey)
 
 	if api.GetStatusHandler == nil {
 		api.GetStatusHandler = operations.GetStatusHandlerFunc(func(params operations.GetStatusParams) middleware.Responder {
@@ -44,7 +50,9 @@ func configureAPI(api *operations.SamsungtvAPI) http.Handler {
 		})
 	}
 
-	api.ServerShutdown = func() {}
+	api.ServerShutdown = func() {
+		// samsungtv.CloseConnection()
+	}
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }
