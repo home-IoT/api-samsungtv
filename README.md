@@ -51,6 +51,7 @@ The code is published under an [MIT license](LICENSE.md).
 Please report issues or feature requests using Github issues. Code contributions can be done using pull requests. 
 
 ## Relevant Repositories
-* [github.com/vrachieru/samsung-tv-api](https://github.com/vrachieru/samsung-tv-api)
 * [github.com/Ape/samsungctl](https://github.com/Ape/samsungctl)
 * [github.com/mhvis/samsung-tv-control](https://github.com/mhvis/samsung-tv-control)
+* [gist.github.com/freman](https://gist.github.com/freman)
+
