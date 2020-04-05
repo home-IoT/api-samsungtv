@@ -130,6 +130,8 @@ func getKeyCommand(key string) keyCommand {
 		key = keyPrefix + key
 	}
 
+	key = strings.ToUpper(key)
+
 	if keyTemplate == nil {
 		keyTemplate = &keyCommand{
 			Method: "ms.remote.control",
