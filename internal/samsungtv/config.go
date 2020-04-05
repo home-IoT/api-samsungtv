@@ -18,7 +18,6 @@ type tvConfig struct {
 }
 
 type controllerConfig struct {
-	Host string `yaml:"host"`
 	Name string `yaml:"name"`
 }
 
