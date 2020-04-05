@@ -1,6 +1,8 @@
 package samsungtv
 
 import (
+	"crypto/tls"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -57,15 +59,19 @@ func SendKey(key string) error {
 func connect() (*websocket.Conn, error) {
 	host := fmt.Sprintf("%s:%s", configuration.TV.Host, configuration.TV.Port)
 	path := "/api/v2/channels/samsung.remote.control"
-	query := fmt.Sprintf("name=%s", configuration.Controller.Name)
-	u := url.URL{Scheme: "ws", Host: host, Path: path, RawQuery: query}
+	query := fmt.Sprintf("name=%s", base64.StdEncoding.EncodeToString([]byte(configuration.Controller.Name)))
+	u := url.URL{Scheme: "wss", Host: host, Path: path, RawQuery: query}
 
-	origin := fmt.Sprintf("http://%s:%s", configuration.TV.Host, configuration.TV.Port)
+	// origin := fmt.Sprintf("http://%s:%s", configuration.TV.Host, configuration.TV.Port)
+	// log.Infof("Opening connection to %s with origin %s...", u.String(), origin)
+	// header := make(http.Header)
+	// header.Add("Origin", origin)
 
-	log.Infof("Opening connection to %s with origin %s...", u.String(), origin)
-	header := make(http.Header)
-	header.Add("Origin", origin)
-	connection, _, err := websocket.DefaultDialer.Dial(u.String(), header)
+	log.Infof("Opening connection to %s ...", u.String())
+
+	websocket.DefaultDialer.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
+	connection, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
 		log.Debugf("%v", err)
 		return nil, err
