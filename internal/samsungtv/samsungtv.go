@@ -62,11 +62,6 @@ func connect() (*websocket.Conn, error) {
 	query := fmt.Sprintf("name=%s", base64.StdEncoding.EncodeToString([]byte(configuration.Controller.Name)))
 	u := url.URL{Scheme: "wss", Host: host, Path: path, RawQuery: query}
 
-	// origin := fmt.Sprintf("http://%s:%s", configuration.TV.Host, configuration.TV.Port)
-	// log.Infof("Opening connection to %s with origin %s...", u.String(), origin)
-	// header := make(http.Header)
-	// header.Add("Origin", origin)
-
 	log.Infof("Opening connection to %s ...", u.String())
 
 	websocket.DefaultDialer.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
