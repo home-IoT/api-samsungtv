@@ -1,8 +1,9 @@
 ---
-# TV configuration
+# TV configuration 
 tv:
   host: 127.0.0.1
-  port: 8001
+  protocol: wss
+  port: 8002
 controller: 
   name: SamsungTVController
 

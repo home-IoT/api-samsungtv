@@ -10,11 +10,20 @@ import (
 )
 
 const defaultControllerName = "SamsungTVController"
-const defaultTVPort = "8001"
+
+const protocolWS = "ws"
+const protocolWSS = "wss"
+
+var defaultTVProtocol = protocolWSS
+
+var defaultPortWS = "8001"
+var defaultPortWSS = "8002"
+var defaultTVPort = defaultPortWS
 
 type tvConfig struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
+	Host     string  `yaml:"host"`
+	Port     *string `yaml:"port"`
+	Protocol *string `yaml:"protocol"`
 }
 
 type controllerConfig struct {
@@ -68,8 +77,19 @@ func loadConfig(configFile string) {
 }
 
 func setDefaultValues(config *samsungTVConfigYAML) {
-	if len(config.TV.Port) == 0 {
-		config.TV.Port = defaultTVPort
+	if config.TV.Protocol == nil {
+		config.TV.Protocol = &defaultTVProtocol
+	}
+
+	if config.TV.Port == nil {
+		switch *config.TV.Protocol {
+		case protocolWS:
+			config.TV.Port = &defaultPortWS
+		case protocolWSS:
+			config.TV.Port = &defaultPortWSS
+		default:
+			config.TV.Port = &defaultTVPort
+		}
 	}
 
 	if len(config.Controller.Name) == 0 {

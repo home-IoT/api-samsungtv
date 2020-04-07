@@ -18,7 +18,7 @@ import (
 )
 
 const keyPrefix = "KEY_"
-const statusURL = "http://%s:%s/api/v2/"
+const statusURL = "http://%s:8001/api/v2/"
 
 // CheckConnection checks if a connection to the TV is possible
 func CheckConnection() (bool, string) {
@@ -57,10 +57,10 @@ func SendKey(key string) error {
 
 // connect opens a Websocket connection to the TV
 func connect() (*websocket.Conn, error) {
-	host := fmt.Sprintf("%s:%s", configuration.TV.Host, configuration.TV.Port)
+	host := fmt.Sprintf("%s:%s", configuration.TV.Host, *configuration.TV.Port)
 	path := "/api/v2/channels/samsung.remote.control"
 	query := fmt.Sprintf("name=%s", base64.StdEncoding.EncodeToString([]byte(configuration.Controller.Name)))
-	u := url.URL{Scheme: "wss", Host: host, Path: path, RawQuery: query}
+	u := url.URL{Scheme: *configuration.TV.Protocol, Host: host, Path: path, RawQuery: query}
 
 	log.Infof("Opening connection to %s ...", u.String())
 
@@ -95,7 +95,7 @@ func closeConnection(connection *websocket.Conn) {
 }
 
 func getStatus() (string, error) {
-	resp, err := http.Get(fmt.Sprintf(statusURL, configuration.TV.Host, configuration.TV.Port))
+	resp, err := http.Get(fmt.Sprintf(statusURL, configuration.TV.Host))
 	if err != nil {
 		return "", err
 	}

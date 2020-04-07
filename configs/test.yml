@@ -2,6 +2,7 @@
 # TV configuration
 tv:
   host: 192.168.1.65
+  protocol: wss
   port: 8002
 controller: 
   name: RoozRemote
