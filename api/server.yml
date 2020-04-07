@@ -2,6 +2,7 @@ swagger: "2.0"
 info:
   title: SamsungTV-API
   version: 1.0.0
+  description: A simple REST API to modern Samsung TVs based on a Websocket connection
 consumes:
 - application/json
 produces:
@@ -45,6 +46,7 @@ paths:
         type: string
         in: path
         required: true
+        description: The remote control key to be sent to the TV
     post:
       description: Sends a remote control key to the TV
       operationId: postKey
