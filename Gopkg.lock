@@ -144,6 +144,12 @@
   version = "v1.2.2"
 
 [[projects]]
+  name = "github.com/sabhiram/go-wol"
+  packages = ["."]
+  revision = "4fd002b5515afaf46b3fe9a9b24ef8c245944f36"
+  version = "1.1.2"
+
+[[projects]]
   name = "go.mongodb.org/mongo-driver"
   packages = [
     "bson",
@@ -205,6 +211,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e4c85a29b057050a202f7d19ec66eee14b9bba68e0df4697a8bf6e51d5e1553c"
+  inputs-digest = "8f6c28e5ccd1694e042cd694debfddfc4529d01c8c4c6c9d3f54760ecc79bb0b"
   solver-name = "gps-cdcl"
   solver-version = 1

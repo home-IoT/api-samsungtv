@@ -43,6 +43,9 @@ func NewSamsungtvAPI(spec *loads.Document) *SamsungtvAPI {
 		PostKeyHandler: PostKeyHandlerFunc(func(params PostKeyParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostKey has not yet been implemented")
 		}),
+		PostPowerHandler: PostPowerHandlerFunc(func(params PostPowerParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostPower has not yet been implemented")
+		}),
 	}
 }
 
@@ -78,6 +81,8 @@ type SamsungtvAPI struct {
 	GetStatusHandler GetStatusHandler
 	// PostKeyHandler sets the operation handler for the post key operation
 	PostKeyHandler PostKeyHandler
+	// PostPowerHandler sets the operation handler for the post power operation
+	PostPowerHandler PostPowerHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -147,6 +152,10 @@ func (o *SamsungtvAPI) Validate() error {
 
 	if o.PostKeyHandler == nil {
 		unregistered = append(unregistered, "PostKeyHandler")
+	}
+
+	if o.PostPowerHandler == nil {
+		unregistered = append(unregistered, "PostPowerHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -256,6 +265,11 @@ func (o *SamsungtvAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/key/{key}"] = NewPostKey(o.context, o.PostKeyHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/power/{state}"] = NewPostPower(o.context, o.PostPowerHandler)
 
 }
 

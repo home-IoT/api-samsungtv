@@ -2,6 +2,7 @@
 # TV configuration
 tv:
   host: 192.168.1.65
+  mac: '7c:64:56:73:1f:b6'
   protocol: wss
   port: 8002
 controller: 

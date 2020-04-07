@@ -58,6 +58,32 @@ func init() {
         }
       ]
     },
+    "/power/{state}": {
+      "post": {
+        "description": "Turns the TV on or off",
+        "operationId": "postPower",
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "description": "either of the values 'on' or 'off'",
+          "name": "state",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
     "/status": {
       "get": {
         "description": "Checks the configuration and gets the status of the TV",
@@ -142,6 +168,32 @@ func init() {
         {
           "type": "string",
           "name": "key",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/power/{state}": {
+      "post": {
+        "description": "Turns the TV on or off",
+        "operationId": "postPower",
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "default": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "description": "either of the values 'on' or 'off'",
+          "name": "state",
           "in": "path",
           "required": true
         }

@@ -15,6 +15,7 @@ The API of the server is defined by the [`api/server.yml`](api/server.yml) Swagg
 
 #### Examples
 * `/status`: to the get connection status
+* `/power/<on|off>`: turns the TV on or off
 * `/key/POWER`: to turn the TV on or off; this is translated to a `KEY_POWER` key event
 
 A list of KEYs that I tested with my TV: 

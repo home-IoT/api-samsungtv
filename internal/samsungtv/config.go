@@ -22,6 +22,7 @@ var defaultTVPort = defaultPortWS
 
 type tvConfig struct {
 	Host     string  `yaml:"host"`
+	Mac      *string `yaml:"mac"`
 	Port     *string `yaml:"port"`
 	Protocol *string `yaml:"protocol"`
 }
