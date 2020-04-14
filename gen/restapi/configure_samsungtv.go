@@ -52,7 +52,7 @@ func configureAPI(api *operations.SamsungtvAPI) http.Handler {
 	}
 
 	api.ServerShutdown = func() {
-		// samsungtv.CloseConnection()
+		samsungtv.CloseConnection()
 	}
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))

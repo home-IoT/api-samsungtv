@@ -20,12 +20,15 @@ import (
 const keyPrefix = "KEY_"
 const statusURL = "http://%s:8001/api/v2/"
 
+const writeTimeTolerance = 1 * time.Second
+
+var connection *websocket.Conn
+
 // CheckConnection checks if a connection to the TV is possible
 func CheckConnection() (bool, string) {
 	var text string
-	conn, err := connect()
+	_, err := connect()
 	if err == nil {
-		defer closeConnection(conn)
 		text, err = getStatus()
 	}
 
@@ -39,10 +42,26 @@ func SendKey(key string) error {
 		log.Debugf("Error establishing a connection.")
 		return err
 	}
-	defer closeConnection(conn)
 
 	keyCommand := getKeyCommand(key)
+
+	conn.SetWriteDeadline(time.Now().Add(writeTimeTolerance))
 	wErr := conn.WriteJSON(keyCommand)
+
+	if wErr != nil {
+		// try one more time
+		log.Debugf("Faced a write error; will try to connect again.")
+
+		conn, err := reconnect()
+		if err != nil {
+			log.Debugf("Error establishing a connection.")
+			return err
+		}
+
+		conn.SetWriteDeadline(time.Now().Add(writeTimeTolerance))
+		wErr = conn.WriteJSON(keyCommand)
+	}
+
 	if wErr != nil {
 		log.Debugf("Error sending key: %v", wErr)
 		return wErr
@@ -55,30 +74,8 @@ func SendKey(key string) error {
 	return nil
 }
 
-// connect opens a Websocket connection to the TV
-func connect() (*websocket.Conn, error) {
-	host := fmt.Sprintf("%s:%s", configuration.TV.Host, *configuration.TV.Port)
-	path := "/api/v2/channels/samsung.remote.control"
-	query := fmt.Sprintf("name=%s", base64.StdEncoding.EncodeToString([]byte(configuration.Controller.Name)))
-	u := url.URL{Scheme: *configuration.TV.Protocol, Host: host, Path: path, RawQuery: query}
-
-	log.Infof("Opening connection to %s ...", u.String())
-
-	websocket.DefaultDialer.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-
-	connection, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
-	if err != nil {
-		log.Debugf("%v", err)
-		return nil, err
-	}
-
-	log.Infof("Connection is established.")
-
-	return connection, nil
-}
-
-// closeConnection closes the Websocket if it is open
-func closeConnection(connection *websocket.Conn) {
+// CloseConnection closes the Websocket if it is open
+func CloseConnection() {
 	defer connection.Close()
 
 	log.Infof("Closing the connection...")
@@ -92,6 +89,41 @@ func closeConnection(connection *websocket.Conn) {
 
 	connection = nil
 	log.Infof("Connection closed.")
+}
+
+// Tries to reconnect to the server
+func reconnect() (*websocket.Conn, error) {
+	if connection != nil {
+		connection.Close()
+		connection = nil
+	}
+
+	return connect()
+}
+
+// connect opens a Websocket connection to the TV
+func connect() (*websocket.Conn, error) {
+	if connection == nil {
+		host := fmt.Sprintf("%s:%s", configuration.TV.Host, *configuration.TV.Port)
+		path := "/api/v2/channels/samsung.remote.control"
+		query := fmt.Sprintf("name=%s", base64.StdEncoding.EncodeToString([]byte(configuration.Controller.Name)))
+		u := url.URL{Scheme: *configuration.TV.Protocol, Host: host, Path: path, RawQuery: query}
+
+		log.Infof("Opening connection to %s ...", u.String())
+
+		websocket.DefaultDialer.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
+		conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+		if err != nil {
+			log.Debugf("%v", err)
+			return nil, err
+		}
+
+		connection = conn
+		log.Infof("Connection is established.")
+	}
+
+	return connection, nil
 }
 
 func getStatus() (string, error) {
