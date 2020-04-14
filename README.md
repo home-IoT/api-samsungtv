@@ -5,7 +5,7 @@ A simple REST API to modern Samsung TVs based on a Websocket connection. I can't
 ## Server
 
 ### REST API
-The API of the server is defined by the [`api/server.yml`](api/server.yml) Swagger specification. See the [API documentation](https://home-iot.github.io/api-samsungtv/) on GitHub pages. 
+See the [API documentation](https://home-iot.github.io/api-samsungtv/) on GitHub pages. The API of the server is defined by the [`api/server.yml`](api/server.yml) Swagger specification. 
 
 #### Examples
 * `/status`: to the get connection status
