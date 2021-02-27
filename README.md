@@ -31,7 +31,7 @@ Make sure you that
 #### Makefile
 There is a [`Makefile`](Makefile) provided that offers a number of targets for preparing, building and running the service. To build and run the service against the [`configs/test.yml`](configs/test.yml) configuration, simply call the `run` target:
 ```
-make clean dep run
+make clean run
 ```
 
 #### Systemd
