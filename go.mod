@@ -16,7 +16,6 @@ require (
 	github.com/sabhiram/go-wol v0.0.0-20180416233928-4fd002b5515a
 	github.com/sirupsen/logrus v1.4.2
 	go.mongodb.org/mongo-driver v1.3.1 // indirect
-	golang.org/x/net v0.0.0-20200320220750-118fecf932d8
-	golang.org/x/sys v0.0.0-20200321134203-328b4cd54aae // indirect
+	golang.org/x/net v0.7.0
 	gopkg.in/yaml.v2 v2.2.8
 )
